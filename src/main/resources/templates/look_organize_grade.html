@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<link rel="stylesheet" type="text/css"
+	href="static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css"
+	href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css"
+	href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css"
+	href="static/h-ui.admin/css/style.css" />
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+<title>选学生</title>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#class_id').change(function(e){
+		var class_id = $('#class_id').val();
+		if(class_id == "0"){
+			$('#stu_id').empty();
+			$('#stu_id').append('<option value="0">请选择学生</option>');
+			$("#table tbody").html("");
+			return ;
+		}
+		
+		$.get("http://localhost:8080/organize_allStudent_teacher/"+class_id,function(data,status){
+			if(data == null || data==""){
+				alert("操作失败,该班级没有学生数据!");
+				$('#stu_id').empty();
+				$("#table tbody").html("");
+			}else{
+				$('#stu_id').empty();
+				$("#table tbody").html("");
+				$('#stu_id').append('<option value="0">请选择学生</option>');
+				for (var i = 0; i < data.length; i++) {
+					var a =data[i].stu_id;
+					var b = data[i].name;
+					
+					$('#stu_id').append('<option value="' + a + '">' + a+'----'+b+ '</option>');
+				}
+			}
+		});
+	});
+	
+	$('#stu_id').change(function(e){
+		var stu_id = $('#stu_id').val();
+		if(stu_id == "0"){
+			$("#table tbody").html("");
+			return ;
+		}
+		$.get("http://localhost:8080/organize_allNewStudent_student/"+stu_id,function(data,status){
+			if(data == null || data==""){
+				alert("操作失败,该学生没有互评分数数据!");
+				$("#table tbody").html("");
+			}else{
+				$("#table tbody").html("");
+				var grade = data.grade;
+				if(grade == -1){
+					grade = 0
+				}
+				//添加table列
+				$("#table").append("<tr>"+"<td>"+data.stu_id+"</td>"+"<td>"+data.name+"</td>"+"<td>"+data.sex+"</td>"+"<td>"+data.class_id+"</td>"+"<td>"+data.age+"</td>"+"<td>"+data.contact+"</td>"+"<td>"+grade+"</td>"+"</tr>");
+			}
+		});
+	});
+});
+</script>
+<style>
+#tablebody tr:hover {
+	cursor: pointer;
+	background-color: grey;
+}
+
+#table td, #table th {
+	text-align: center;
+}
+
+.select {
+	width: auto;
+	height: 30px;
+	padding: 0 10%;
+	margin: 0;
+}
+</style>
+</head>
+<body style="position: relative;">
+	<nav class="breadcrumb"> <i class="Hui-iconfont">&#xe67f;</i> 首页
+	<span class="c-gray en">&gt;</span> 学生分数<span class="c-gray en">&gt;</span>查看分数<a
+		class="btn btn-success radius r"
+		style="line-height: 1.6em; margin-top: 3px"
+		href="javascript:location.replace(location.href);" title="刷新"><i
+		class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="add_header">
+		<font>查看分数</font>
+	</div>
+	<form name="frm" action="teacher_choosestudent">
+		<div class="text-c">
+			班级:<select class="select" id="class_id" name="class_id">
+				<option value="0">请选择班级</option>
+				<option th:each="class : ${classList}"  th:value="${class.class_id}" ><label th:text="${class.class_id}"></label>班</option>
+			</select>
+
+				&nbsp;&nbsp;&nbsp;
+				
+			学生:<select class="select" id="stu_id" name="stu_id">
+				<option value="0">请选择学生</option>
+				
+			</select>
+		</div>
+		<input type="hidden" name="cur_page" value="" />
+		<!-- 增加隐藏变量，记录当前页码 -->
+	</form>
+	<br/>
+	<div
+		style="width: 100%; height: 300px; overflow-y: scroll; scrollbar-base-color: #ff6600;">
+		<table class="table table-border table-bordered table-bg" id="table">
+			<thead>
+				<tr>
+					<th scope="col" colspan="11"><font
+						style="font-size: 20px; font-family: 华文仿宋">报告列表</font></th>
+				</tr>
+				<tr class="text-c">
+					<th width="30">学生id</th>
+					<th width="30">姓名</th>
+					<th width="30">性别</th>
+					<th width="30">班级</th>
+					<th width="30">年龄</th>
+					<th width="20">联系方式</th>
+					<th width="30">互评分数</th>
+				</tr>
+			</thead>
+			<tbody id="tablebody">
+				
+			</tbody>
+		</table>
+	</div>
+	<!-- <div style="width:200px;margin:0 auto"><font style="font-size: 20px; font-family: 华文仿宋; color: orange;;"><label id="y"></label></font></div>
+	<div style="width:200px;margin:0 auto"><font style="font-size: 20px; font-family: 华文仿宋; color: red"><label id="w"></label></font></div>
+	
+	
+	<font style="font-size: 20px; font-family: 华文仿宋; color: purple;" th:if="${flag} == false">(未完全批阅,分数仅供参考)</font>
+	<font style="font-size: 20px; font-family: 华文仿宋; color: green">报告平均评分:</font>
+	<font style="font-size: 20px; font-family: 华文仿宋; color: red" ><label id="allgrade"></label></font> -->
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"/>
+<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"/>
+<link rel="stylesheet" type="text/css" href="lib/webuploader/0.1.5/webuploader.css"/>
+<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css"/>
+
+<script type="text/javascript" src="lib/ueditor/1.4.3/ueditor.config.js"></script>
+<script type="text/javascript" src="lib/ueditor/1.4.3/ueditor.all.min.js"></script>
+<script type="text/javascript" src="lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" src="js/js.js"></script>
+
+<script>
+function sub(){
+	var p = confirm('您确定要提交此课设题目吗?');
+	if(p==true){
+		if(document.getElementById("write_time").value=document.getElementById("writeTime").innerHTML){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	return false;
+}
+</script>
+
+</head>
+<body onload="getSeverTime();">
+	<nav class="breadcrumb">
+		<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>
+		课设管理 <span class="c-gray en">&gt;</span> 添加课设题目 <a
+			class="btn btn-success radius r"
+			style="line-height: 1.6em; margin-top: 3px"
+			href="javascript:location.replace(location.href);" title="刷新"><i
+			class="Hui-iconfont">&#xe68f;</i></a>
+	</nav>
+
+	<div class="page-container">
+		<form action="/courseDesign_add_do"  th:object="${CourseDesign}" class="form form-horizontal" id="form-article-add">
+			<!-- 日期时间 -->
+			<div class="">
+				<p
+					style="height: 50px; text-align: center; font-size: 35px; font-family: 华文彩云; background-color: #eeefff"
+					id="writeTime"></p>
+				<input type="hidden" name="write_time" id="write_time" />
+			</div>
+			<!-- 周次星期 -->
+			<div class="">
+				<p style="height: 30px; text-align: center; font-size: 20px; font-family: 华文行楷; background-color: #eeefff" th:text="${session.weakAndWeakday}"></p>
+			</div>
+			
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">课设题目：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text"  name="title"  >
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">课设内容：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<textarea name="content" id="myEditor" ></textarea>
+					<script type="text/javascript">
+						var editor = new UE.ui.Editor({
+							initialFrameHeight : 300,
+							scaleEnabled:false,
+							readonly : false
+						});
+						editor.render("myEditor");
+					</script>
+				</div>
+			</div>
+			
+			<div class="row cl">
+				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+					<input class="btn btn-primary radius" type="submit"  value="提交"  onClick="return sub()"/>
+					<input  class="btn btn-default radius" type="reset" value="清空" onClick="javascript:window.location.href='/report_add'" >
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

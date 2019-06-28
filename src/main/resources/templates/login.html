@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户登录</title>
+<link href="css/login.css" rel="stylesheet" rev="stylesheet"
+	type="text/css" media="all" />
+<link rel="stylesheet"
+	th:href="@{webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+<script type="text/javascript"
+	th:src="@{webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script type="text/javascript"
+	th:src="@{webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+<script type="text/javascript" src="js/login.js"></script>
+<script type="text/javascript">
+	var i = 1;
+	var newUrl = 'student';
+	//获取验证码
+	function getVerify() {
+		loginForm.image.src = "/getVerify?" + i++;
+	}
+
+	$(document).ready(function() {
+		var j = 0;
+		var $tab_li = $('#tab ul li');
+		$tab_li.hover(function() {
+			$(this).addClass('selected').siblings().removeClass('selected');
+			$("#code img").attr("src", "/getVerify?" + i++);
+			var index = $tab_li.index(this);
+			if (index == 0) {
+				newUrl = 'student';
+			} else if (index == 1) {
+				newUrl = "teacher";
+			} else if (index == 2) {
+				newUrl = "manager";
+			}
+		}, function() {
+
+		});
+	});
+	
+	$(function() {
+		$("#button").click(function() {
+			sub();
+		})
+	})
+	function sub(){
+		var user = $("#username").val();
+		//alert(user);
+		$("#loginForm").attr('action', "/checkVerify?type="+newUrl); //通过jquery为action属性赋值
+		$("#loginForm").submit(); //提交ID为myform的表单
+	}
+	$(function() {
+		$("#code").keydown(function() {
+			if (event.keyCode == '13') {
+				$('#button').click();
+			}
+		})
+	})
+
+	function gst() {
+		var type = "[[${type}]]";
+		if (type == "student") {
+			$('#StudentLogin').addClass('selected').siblings().removeClass(
+					'selected');
+			newUrl = 'student';
+		} else if (type == "teacher") {
+			$('#TeacherLogin').addClass('selected').siblings().removeClass(
+					'selected');
+			newUrl = "teacher";
+		} else if (type == "manager") {
+			$('#ManagerLogin').addClass('selected').siblings().removeClass(
+					'selected');
+			newUrl = "manager";
+		}
+		
+		
+		var result = "[[result]]";
+		if(result == 3){
+			document.getElementById("code").select();
+		}else{
+			
+		}
+	}
+</script>
+</head>
+<body onload="gst()">
+	<div class="header">
+		<img src="images/huo.gif" /> <font size="12" color="#ffffff"
+			face="华文行楷">课程设计管理系统</font>
+	</div>
+	<input type="hidden" id="hidden" value="" />
+	<div id="tab">
+		<ul class="tab_menu">
+			<li class="selected" id="StudentLogin">学生登录</li>
+			<li id="TeacherLogin">教师登录</li>
+			<li id="ManagerLogin">管理员登录</li>
+		</ul>
+		<div class="tab_box">
+			<!-- 登录开始 -->
+			<div>
+				<form action="/checkVerify" id="loginForm" name="loginForm"
+					method="post" class="login_error">
+					<div id="username">
+						<label>账&nbsp;&nbsp;&nbsp;号：</label> 
+						<input type="text"
+							id="username" name="username" th:value='${username}'
+							onclick="javascript:this.value=''" nullmsg="账号不能为空！" />
+						<!--ajaxurl="demo/valid.jsp"-->
+					</div>
+					<div id="password">
+						<label>密&nbsp;&nbsp;&nbsp;码：</label> 
+						<input type="password"
+							id="password" name="password"  th:value='${password}'
+							onclick="javascript:this.value=''" nullmsg="密码不能为空！" />
+					</div>
+					<div id="code">
+						<label>验证码：</label>
+						<input type="text" id="code"
+							onclick="javascript:this.value=''" style="vertical-align: middle"
+							name="code" value="" /> 
+						<img src="/getVerify" id="image"
+							style="vertical-align: middle" title="点击更换" onclick="getVerify()" />
+					</div>
+					<div id="remember">
+						<input type="checkbox" name="remember"> <label>记住密码</label>
+					</div>
+					<div id="login" style="text-align: center">
+						<button type="button" id="button">登录</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="foot">
+		<p>-课程设计管理系统-</p>
+	</div>
+</body>
+</html>

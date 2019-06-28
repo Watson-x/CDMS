@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<link rel="stylesheet" type="text/css"
+	href="static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css"
+	href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css"
+	href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css"
+	href="static/h-ui.admin/css/style.css" />
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+<title>选学生</title>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#class_id').change(function(e){
+		var class_id = $('#class_id').val();
+		if(class_id == "0"){
+			$("#table tbody").html("");
+			return ;
+		}
+		$.get("http://localhost:8080/all_grade_BestNewStudent/"+class_id,function(data,status){
+			if(data == null || data==""){
+				alert("操作失败,该学生没有报告数据!");
+				$("#table tbody").html("");
+			}else{
+				$("#table tbody").html("");
+				for (var i = 0; i < data.length; i++) {
+					var re_grade = data[i].re_grade.toFixed(2);
+					var stu_grade = data[i].stu_grade.toFixed(2);
+					var a = re_grade,b=stu_grade;
+					if(re_grade < 0){
+						a = 0;
+						re_grade = "未批阅";
+					}
+					if(stu_grade < 0){
+						b = 0;
+						stu_grade = "未评价";
+					}
+					var avg = (a*0.7+b*0.3).toFixed(2);
+					//添加table列
+					$("#table").append("<tr>"+"<td>"+(i+1)+"</td>"+"<td>"+data[i].stu_id+"</td>"+"<td>"+data[i].name+"</td>"+"<td>"+data[i].sex+"</td>"+"<td>"+data[i].age+"</td>"+"<td>"+data[i].org_id+"</td>"+"<td>"+data[i].contact+"</td>"+"<td>"+re_grade+"</td>"+"<td>"+stu_grade+"</td>"+"<td>"+avg+"</td>"+"</tr>");
+				}
+			}
+		});
+	});
+});
+</script>
+<style>
+#tablebody tr:hover {
+	cursor: pointer;
+	background-color: grey;
+}
+
+#table td, #table th {
+	text-align: center;
+}
+</style>
+</head>
+<body style="position: relative;">
+	<nav class="breadcrumb"> <i class="Hui-iconfont">&#xe67f;</i> 首页
+	<span class="c-gray en">&gt;</span> 学生分数<span class="c-gray en">&gt;</span>查看分数<a
+		class="btn btn-success radius r"
+		style="line-height: 1.6em; margin-top: 3px"
+		href="javascript:location.replace(location.href);" title="刷新"><i
+		class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="add_header">
+		<font>查看分数</font>
+	</div>
+	<br/>
+	<form name="frm" class="form form-horizontal" id="form-article-add">
+		<!-- 选择学生 -->
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span
+				class="c-red">*</span>选择班级:</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box"> 
+				<select class="select" name="class_id" id="class_id" style="text-align:center">
+					<option value="0">请选择班级</option>
+					<option th:each="class : ${classList}"  th:value="${class.class_id}" ><label th:text="${class.class_id}"></label>班</option>
+				</select>
+				</span>
+			</div>
+		</div>
+	</form>
+	<br/>
+	<div
+		style="width: 100%; height: 300px; overflow-y: scroll; scrollbar-base-color: #ff6600;">
+		<table class="table table-border table-bordered table-bg" id="table">
+			<thead>
+				<tr>
+					<th scope="col" colspan="11"><font
+						style="font-size: 20px; font-family: 华文仿宋">报告列表</font></th>
+				</tr>
+				<tr class="text-c">
+					<th width="10">序号</th>
+					<th width="30">学号</th>
+					<th width="30">姓名</th>
+					<th width="20">性别</th>
+					<th width="20">年龄</th>
+					<th width="20">组号</th>
+					<th width="40">联系方式</th>
+					<th width="30">报告平均分</th>
+					<th width="30">组员评分</th>
+					<th width="30">学生总分</th>
+				</tr>
+			</thead>
+			<tbody id="tablebody">
+				
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

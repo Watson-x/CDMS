@@ -1,0 +1,23 @@
+@charset "utf-8";
+/* 你自己的样式 */
+body{
+	background-color: #eeeeee;
+}
+.add_header{
+	width:200px;
+	height:20px;
+	font-size: 25px;
+	color:red;
+	margin:0 auto;
+	margin-bottom: 20px;
+}
+.from label{
+	margin-top:3px;
+	cursor:text;
+	text-align:right
+}
+.img{
+	width:45px;
+	height:45px;
+	-moz-border-radius:20px;
+}

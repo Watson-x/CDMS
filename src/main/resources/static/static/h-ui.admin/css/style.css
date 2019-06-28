@@ -1,0 +1,13 @@
+@charset "utf-8";
+/* 你自己的样式 */
+body{
+	background-color: #eeefff
+}
+.add_header{
+	width:200px;
+	height:20px;
+	font-size: 25px;
+	color:red;
+	margin:0 auto;
+	margin-bottom: 20px;
+}

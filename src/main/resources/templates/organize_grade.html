@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<link rel="stylesheet" type="text/css"
+	href="static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css"
+	href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css"
+	href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css"
+	href="static/h-ui.admin/css/style.css" />
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+<title>选学生</title>
+<script type="text/javascript">
+	function gradeDo(va){
+		var id = va.id;
+		var stu_id = $('#stu'+id).text();
+		var grade = $('#grade'+id).val();
+		
+		if(grade == ""){
+			alert("请先填写分数再提交!");
+			return ;
+		}
+		
+		if(grade == "" || grade > 100 || grade < 0){
+			alert("分数不合法!");
+			return ;
+		}
+		
+		var op = confirm('您确定提交该分数吗?');
+		if(op == true){
+			window.location.href="/gradeDo/"+stu_id+"/"+grade;
+		}
+		
+	}
+</script>
+<style>
+#tablebody tr:hover {
+	cursor: pointer;
+	background-color: grey;
+}
+
+#table td, #table th {
+	text-align: center;
+}
+
+.select {
+	width: auto;
+	height: 30px;
+	padding: 0 10%;
+	margin: 0;
+}
+</style>
+</head>
+<body style="position: relative;">
+	<nav class="breadcrumb"> <i class="Hui-iconfont">&#xe67f;</i> 首页
+	<span class="c-gray en">&gt;</span>组内评分<span class="c-gray en">&gt;</span>组内评分<a
+		class="btn btn-success radius r"
+		style="line-height: 1.6em; margin-top: 3px"
+		href="javascript:location.replace(location.href);" title="刷新"><i
+		class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="add_header">
+		<font>组内评分</font>
+	</div>
+
+	<div
+		style="width: 100%; height: 300px; overflow-y: scroll; scrollbar-base-color: #ff6600;">
+		<table class="table table-border table-bordered table-bg" id="table">
+			<thead>
+				<tr>
+					<th scope="col" colspan="11"><font
+						style="font-size: 20px; font-family: 华文仿宋">评分列表</font></th>
+				</tr>
+				<tr class="text-c">
+					<th width="40">序号</th>
+					<th width="40">学号</th>
+					<th width="40">姓名</th>
+					<th width="40">班级</th>
+					<th width="20">性别</th>
+					<th width="20">年龄</th>
+					<th width="60">联系方式</th>
+					<th width="40">分数</th>
+					<th width="20">操作</th>
+				</tr>
+			</thead>
+			<tbody id="tablebody">
+				<tr th:each="st,in : ${newStudentList}"  >
+					<td><p th:text="${in.index+1}" ></p></td>
+					<td><p th:text="${st.stu_id}" th:id="stu+(${in.index+1})"></p></td>
+					<td><p th:text="${st.name}"></p></td>
+					<td><p th:text="${st.class_id}"></p></td>
+					<td><p th:text="${st.sex}"></p></td>
+					<td><p th:text="${st.age}"></p></td>
+					<td><p th:text="${st.contact}"></p></td>
+					<td th:switch="${st.grade}">
+	                    <span th:case="-1">
+	                    	<input type="text" style="text-align:center" th:id="grade+(${in.index+1})" 
+						  class="input-text"maxlength='3' onkeyup="this.value=this.value.replace(/\D/g,'')" />
+	                    </span>
+	                    <span th:case="*">
+	                    	<input type="text" style="text-align:center" th:id="grade+(${in.index+1})" th:value="${st.grade}"
+						  class="input-text"maxlength='3' onkeyup="this.value=this.value.replace(/\D/g,'')" readonly />
+	                    </span>
+                	</td>
+					<td th:switch="${st.grade}">
+						<span th:case="-1">
+							<a class="btn btn-primary"
+							style="display: block; margin: 0 auto"
+							 onclick="gradeDo(this)" th:id="${in.index+1}">提交评分</a>
+						</span>
+						<span th:case="*">
+							<a class="btn btn-primary"
+							style="display: block; margin: 0 auto; color:maroon;"
+							 onclick="alert('该同学评分已提交!')" th:id="${in.index+1}">提交评分</a>
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

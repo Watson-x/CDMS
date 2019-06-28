@@ -1,0 +1,200 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*登录界面整体风格*/
+html {
+	overflow-y:scroll;
+	vertical-align:baseline;
+}
+body {
+	font-family:Microsoft YaHei, Segoe UI, Tahoma, Arial, Verdana, sans-serif, "新宋体";
+	font-size:12px;
+	color:#000000;
+	height:100%;
+	line-height:1;
+	background:#999;
+}
+* {
+	margin:0 auto;
+	padding:0px;
+}
+ul, li {
+	list-style:none
+}
+/*tab登录选项卡*/
+#tab {
+	width:410px;
+	height:389px;
+	position:relative;
+	margin:40px auto 0px auto;
+	text-align:center;
+	padding:1px;
+}
+#tab .tab_menu {
+	width:100%;
+	float:left;
+	position:absolute;
+	z-index:1;
+}
+#tab .tab_menu li {
+	float:left;
+	width:33%;
+	height:50px;
+	line-height:50px;
+	border-bottom:0px;
+	cursor:pointer;
+	text-align:center;
+	margin:0 1px 0 0;
+	background-color:#000000;
+	color:#FFFFFF;
+	font-size:16px;
+ 	filter:alpha(opacity:80);
+	opacity:0.8;
+}
+#tab .tab_box {
+	display:block;
+	width:409px;
+	height:338px;
+	clear:both;
+	top:50px;
+	position:relative;
+	background-color:#ffffff;
+	color:#000000;
+	font-size:16px;
+    filter:alpha(opacity:80);
+	opacity:0.8;
+}
+#tab .tab_box input{font-size:12px;}
+#tab .tab_menu .selected {
+	cursor:pointer;
+	background-color:#FFFFFF;
+	color:#000000;
+	font-size:16px;
+ 	filter:alpha(opacity:80);
+	opacity:0.8;
+}
+.hide {
+	display:none;
+}
+.tab_box div {
+	padding:10px;
+}
+.header{
+	height:140px;
+	margin-left: 70px;
+}
+.header img,.header font{
+	display:block;
+	float:left;
+}
+.header img{
+	width:158px;
+	height:140px;
+}
+.header font{
+	line-height: 140px;
+	margin-left: 20px;
+}
+.foot{
+	margin-top:20px;
+	height:60px;
+	font-size: 14px;
+	color:#fffff0;
+	text-align: center;
+}
+.foot p{
+	line-height: 60px;
+}
+input[type=text], input[type=password] {
+	width:200px;
+	height:40px;
+	margin-top:10px;
+	padding:0px 15px;
+	border:1px solid rgba(0, 0, 0, .15);
+	border-radius:6px;
+	color:#000000;
+	letter-spacing:2px;
+	font-size:16px;
+	background:transparent;
+}
+#code input {
+	width:95px;
+}
+#code img {
+	width:100px;
+	height:40px;
+	border:none;
+}
+#code input,img{
+	vertical-align:middle;
+}
+button {
+	cursor:pointer;
+	width:31%;
+	height:45px;
+	padding:0;
+	background:#6ca5c3;
+	border:1px solid #6ca5c3;
+	border-radius:12px;
+	color:#fff;
+	font-size:24px;
+	font-family:华文行楷;
+	text-shadow:0 1px 2px rgba(0, 0, 0, .1)
+}
+input:focus {
+	outline:none;
+	box-shadow:0 2px 3px 0 rgba(0, 0, 0, .1) inset, 0 2px 7px 0 rgba(0, 0, 0, .2)
+}
+button:hover {
+	box-shadow:0 15px 30px 0 rgba(240, 70, 0, .15) inset, 0 2px 7px 0 rgba(0, 0, 0, .2)
+}
+
+@-webkit-keyframes animate-cloud {
+  from {
+    background-position: 600px 100%;
+  }
+  to {
+    background-position: 0 100%;
+  }
+}
+@-moz-keyframes animate-cloud {
+  from {
+    background-position: 600px 100%;
+  }
+  to {
+    background-position: 0 100%;
+  }
+}
+@-ms-keyframes animate-cloud {
+  from {
+    background-position: 600px 100%;
+  }
+  to {
+    background-position: 0 100%;
+  }
+}
+@-o-keyframes animate-cloud {
+  from {
+    background-position: 600px 100%;
+  }
+  to {
+    background-position: 0 100%;
+  }
+}
+
+html{
+	height: 100%;
+}
+/* 背景图片移动特效 */
+.body_body{}
+body{
+   background:url(../images/longmao.jpg) 100px bottom repeat-x  #049ec4;
+  -webkit-animation: animate-cloud 20s linear infinite;
+  -moz-animation: animate-cloud 20s linear infinite;
+  -ms-animation: animate-cloud 20s linear infinite;
+  -o-animation: animate-cloud 20s linear infinite;
+  animation: animate-cloud 20s linear infinite;
+  width: 100%;
+  height: auto;
+}
+
